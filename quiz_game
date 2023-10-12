@@ -1,0 +1,93 @@
+level_1_questions = {
+    "Question 1: I'm tall when I'm young and short when I'm old. What am I?" : "candle",
+    "Question 2: I have keys but open no locks, I have space but no room, you can enter, but you can't go inside. What am I?" : "keyboard",
+    "Question 3: I am not alive, but I can grow; I don't have lungs, but I need air; I don't have a mouth, but water kills me. What am I?" : "fire"
+}
+
+level_2_questions = {
+    "Question 1: The more you take, the more you leave behind. What am I?" : "footsteps",
+    "Question 2: What has keys, but can't open locks?" : "piano",
+    "Question 3: What comes once in a minute, twice in a moment, but never in a thousand years?" : "the letter m"
+
+}
+
+level_3_questions = {
+    "Question 1: I am taken from a mine and shup up in a wooden case, from which I am never released, and yet I am used almost every person. What am I?" : "pencil lead",
+    "Question 2: This belongs to you, but everyone else uses it. What is it?" : "your name",
+    "Question 3: Which word in the dictionary is always spelled incorrectly?" : "incorrectly"
+
+}
+
+
+quiz_levels = {
+    "Level 1" : level_1_questions,
+    "Level 2" : level_2_questions,
+    "Level 3" : level_3_questions
+}
+
+
+GREEN = "\033[92m"
+RED = "\033[91m"
+BLUE = "\033[94m"
+RESET = "\033[0m"
+
+questions_to_advance = 3
+max_attempts = 3
+
+current_level = 1
+total_correct_answers = 0
+
+while current_level <= len(quiz_levels):
+  level_name = f"Level {current_level}"
+  level_questions = quiz_levels[level_name]
+
+  correct_answers = 0
+  incorrect_answers = 0
+
+  for question, answer in level_questions.items():
+    attempts = 0
+
+    while attempts < max_attempts:
+      user_answer = input(question + "\nYour answer: ").strip()
+
+      if user_answer == answer:
+        print(GREEN + "Correct!" + RESET)
+        correct_answers += 1
+        total_correct_answers += 1
+        break
+      else:
+        print(RED + "Incorrect. Try again" + RESET)
+        attempts += 1
+        incorrect_answers += 1
+
+    if attempts == max_attempts:
+      print(RED + "You reached your maximun attempts" + RESET)
+      break
+
+  if incorrect_answers == len(level_questions):
+    print(RED + "Game over!" + RESET)
+    retry_choice = input("Do you want to try again from level 1? (yes/no)").strip()
+    if retry_choice == 'yes':
+      current_level = 1
+      total_correct_answers = 0
+    else:
+      break
+  else:
+    current_level += 1
+    print(BLUE + f"Congratulations! You've advanced from {level_name}" + RESET)
+
+if current_level > len(quiz_levels):
+  print(GREEN + "Congratulations! You've completed all levels!" + RESET)
+
+final_score = total_correct_answers
+
+if final_score == len(quiz_levels) * questions_to_advance:
+  print("Excelent! You got all correct!")
+
+elif final_score >= len(quiz_levels) * (questions_to_advance - 1):
+  print("Good job! You did well!")
+
+else:
+  print("Better luck next time. Keep Practicing!")
+
+print(f"Your final score: {final_score}/{len(quiz_levels) * questions_to_advance}")
